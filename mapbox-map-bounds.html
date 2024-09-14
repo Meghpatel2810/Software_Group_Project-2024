@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapbox with City Selection</title>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        #map {
+            height: 500px;
+            width: 100%;
+        }
+        #search {
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Mapbox with City Selection</h1>
+    <div id="search">
+        <select id="city">
+            <option value="">Select a city</option>
+            <option value="Vadodara">Vadodara</option>
+            <option value="Ahmedabad">Ahmedabad</option>
+            <option value="Nadiad">Nadiad</option>
+            <option value="Anand">Anand</option>
+            <option value="Surat">Surat</option>
+            <option value="Rajkot">Rajkot</option>
+        </select>
+        <button onclick="getDirections()">Get Directions</button>
+    </div>
+    <div id="map"></div>
+
+    <!-- Include Mapbox JavaScript API -->
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js'></script>
+    <script>
+        mapboxgl.accessToken = 'YOUR_MAPBOX_ACCESS_TOKEN';
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [73.2082, 22.3039], // Default center (Vadodara)
+            zoom: 8
+        });
+
+        var cities = {
+            'Vadodara': [73.2082, 22.3039],
+            'Ahmedabad': [72.5714, 23.0225],
+            'Nadiad': [72.8387, 22.6977],
+            'Anand': [72.9542, 22.5714],
+            'Surat': [72.8311, 21.1702],
+            'Rajkot': [70.8022, 22.3039]
+        };
+
+        function getDirections() {
+            var city = document.getElementById('city').value;
+            var destination = cities[city];
+
+            if (destination) {
+                map.setCenter(destination);
+                map.setZoom(12);
+                new mapboxgl.Marker()
+                    .setLngLat(destination)
+                    .setPopup(new mapboxgl.Popup().setText(city))
+                    .addTo(map);
+            } else {
+                alert('Please select a city.');
+            }
+        }
+    </script>
+</body>
+</html>

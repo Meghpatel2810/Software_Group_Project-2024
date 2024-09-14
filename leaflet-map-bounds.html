@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaflet with City Selection</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 500px;
+            width: 100%;
+        }
+        #search {
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Leaflet with City Selection</h1>
+    <div id="search">
+        <select id="city">
+            <option value="">Select a city</option>
+            <option value="Vadodara">Vadodara</option>
+            <option value="Ahmedabad">Ahmedabad</option>
+            <option value="Nadiad">Nadiad</option>
+            <option value="Anand">Anand</option>
+            <option value="Surat">Surat</option>
+            <option value="Rajkot">Rajkot</option>
+        </select>
+        <button onclick="getDirections()">Get Directions</button>
+    </div>
+    <div id="map"></div>
+
+    <!-- Include Leaflet JavaScript API -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        var map = L.map('map').setView([22.3039, 73.2082], 8); // Default center (Vadodara)
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        var cities = {
+            'Vadodara': [22.3039, 73.2082],
+            'Ahmedabad': [23.0225, 72.5714],
+            'Nadiad': [22.6977, 72.8387],
+            'Anand': [22.5714, 72.9542],
+            'Surat': [21.1702, 72.8311],
+            'Rajkot': [22.3039, 70.8022]
+        };
+
+        function getDirections() {
+            var city = document.getElementById('city').value;
+            var destination = cities[city];
+
+            if (destination) {
+                map.setView(destination, 12);
+                L.marker(destination).addTo(map)
+                    .bindPopup(city)
+                    .openPopup();
+            } else {
+                alert('Please select a city.');
+            }
+        }
+    </script>
+</body>
+</html>
