@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visit Sports Location</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Visit Sports Location</h1>
+
+    <form id="visit-form">
+        <h2>Select Location</h2>
+        <label for="location">Choose a location:</label>
+        <select id="location" name="location" onchange="updateMap()">
+            <option value="Vadodara, India" data-lat="22.3076" data-lng="73.1812">Vadodara</option>
+            <option value="Ahmedabad, India" data-lat="23.0225" data-lng="72.5714">Ahmedabad</option>
+            <option value="Nadiad, India" data-lat="22.6926" data-lng="72.8481">Nadiad</option>
+            <option value="Anand, India" data-lat="22.5586" data-lng="72.9284">Anand</option>
+            <option value="Surat, India" data-lat="21.1702" data-lng="72.8311">Surat</option>
+            <option value="Rajkot, India" data-lat="22.3039" data-lng="70.8022">Rajkot</option>
+        </select>
+        <br><br>
+        <input type="button" value="Get Directions" onclick="getDirections()">
+        <input type="button" value="Go Play" onclick="bookSlot()">
+    </form>
+
+    <div id="map"></div>
+
+    <a href="index.html">Back to Home</a>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+    <script>
+        let map;
+        let marker;
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 22.3076, lng: 73.1812 }, // Default to Vadodara
+                zoom: 12
+            });
+            marker = new google.maps.Marker({
+                map: map,
+                position: { lat: 22.3076, lng: 73.1812 }
+            });
+        }
+
+        function updateMap() {
+            const select = document.getElementById('location');
+            const selectedOption = select.options[select.selectedIndex];
+            const lat = parseFloat(selectedOption.getAttribute('data-lat'));
+            const lng = parseFloat(selectedOption.getAttribute('data-lng'));
+            
+            const location = { lat: lat, lng: lng };
+            map.setCenter(location);
+            marker.setPosition(location);
+        }
+
+        function getDirections() {
+            const select = document.getElementById('location');
+            const address = select.value;
+            const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(address)}`;
+            window.open(directionsUrl, '_blank');
+        }
+
+        function bookSlot() {
+            // Redirect to booking page or handle booking logic
+            window.location.href = 'booking.html'; // Make sure to have a booking.html page
+        }
+    </script>
+</body>
+</html>
